@@ -14,10 +14,12 @@ WindowsGSM >= 1.21.0
   3. Click [RELOAD PLUGINS] button or restart WindowsGSM
 
 # Map Selection (Legacy has multiple maps you can select)
-Since Legacy has multiple maps you can select between, you can select by using any of the following:
+Since Legacy has multiple maps you can select between, you can select by using any of the following as the specific Servers Map Parameter:
 
 **Isle V3**: Isle V3, isle v3, v3, islev3
+
 **Thenyaw**: Thenyaw, thenyaw, ThenyawIsland, Thenyaw Island
+
 **DV_TestLevel**: testlevel, DV_TestLevel, dm, Test Level, Dev Map, Dev level
 
 # Game Mode Selection
