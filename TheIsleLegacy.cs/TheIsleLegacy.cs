@@ -121,12 +121,6 @@ namespace WindowsGSM.Plugins
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MaxPlayers={_serverData.ServerMaxPlayer}";
             param += $"?{_serverData.ServerParam} -nosteamclient -game -server -log";
 
-            System.Console.WriteLine(param);
-
-
-
-
-
             // Prepare Process
             var p = new Process
             {
