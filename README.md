@@ -1,6 +1,6 @@
 # WindowsGSM.TheIsleLegacy
 🧩WindowsGSM plugin that provides TheIsle Legacy Dedicated server support!
-- Modified version of [@dkdue] (https://www.github.com/dkdue)'s [Evrima](https://github.com/dkdue/WindowsGSM.TheIsle) version to benefit the good old Legacy Version. 
+- Modified version of [@dkdue](https://www.github.com/dkdue)'s [Evrima](https://github.com/dkdue/WindowsGSM.TheIsle) version to benefit the good old Legacy Version. 
 
 # The Game
 https://store.steampowered.com/app/376210/The_Isle/ - Legacy Version (Not Evrima!)
