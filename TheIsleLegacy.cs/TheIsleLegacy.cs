@@ -86,11 +86,39 @@ namespace WindowsGSM.Plugins
             string shipExePath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, StartPath);
 
             // Prepare start parameter
-            //string param = string.IsNullOrWhiteSpace(_serverData.ServerMap) ? string.Empty : $"{_serverData.ServerMap}?listen";
-            string param = string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $" MultiHome={_serverData.ServerIP}";
+            /*
+            if server default map contains either Isle V3 or Thenyaw or DV_TestLevel then add the string
+            /Game/TheIsle/Maps/Landscape3/Isle_V3 for Isle V3
+            /Game/TheIsle/Maps/Thenyaw_Island/Thenyaw_Island for Thenyaw
+            /Game/TheIsle/Maps/Developer/DV_TestLevel for Dev Map
+            */
+
+            List<string> IsleV3Variations = new List<string>() { "Isle V3", "isle v3", "v3", "islev3" };
+            List<string> ThenyawVariations = new List<string>() { "Thenyaw", "thenyaw", "ThenyawIsland", "Thenyaw Island" };
+            List<string> TestlevelVariations = new List<string>() { "testlevel", "DV_TestLevel", "dm", "Test Level", "Dev Map", "Dev level" };
+
+            string param = string.IsNullOrWhiteSpace(_serverData.ServerMap) ? string.Empty : $"{_serverData.ServerMap}";
+            if (IsleV3Variations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
+            {
+                param += "/Game/TheIsle/Maps/Landscape3/Isle_V3";
+            }
+            else if (ThenyawVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
+            {
+                param += "/Game/TheIsle/Maps/Thenyaw_Island/Thenyaw_Island";
+            }
+            else if (TestlevelVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
+            {
+                param += "/Game/TheIsle/Maps/Developer/DV_TestLevel";
+            }
+
+            param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MultiHome={_serverData.ServerIP}";
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?Port={_serverData.ServerPort}";
-			param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?QueryPort={_serverData.ServerQueryPort}";
+            param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?QueryPort={_serverData.ServerQueryPort}";
             param += $"?{_serverData.ServerParam}? -nosteamclient -game -server -log";
+
+
+
+
 
             // Prepare Process
             var p = new Process
