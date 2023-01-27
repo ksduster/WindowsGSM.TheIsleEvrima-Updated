@@ -10,7 +10,7 @@ using System.Net;
 
 namespace WindowsGSM.Plugins
 {
-    public class TheIsle : SteamCMDAgent
+    public class TheIsleLegacy : SteamCMDAgent
     {
         // - Plugin Details
         public Plugin Plugin = new Plugin
@@ -19,7 +19,7 @@ namespace WindowsGSM.Plugins
             author = "MENIX",
             description = "WindowsGSM plugin for supporting TheIsle Legacy Dedicated Server",
             version = "1.0",
-            url = "https://github.com/menixx1337/WindowsGSM.TheIsleLegacy", // Github repository link (Best practice)
+            url = "https://github.com/menix1337/WindowsGSM.TheIsleLegacy", // Github repository link (Best practice)
             color = "#34c9eb" // Color Hex
         };
 
@@ -28,7 +28,7 @@ namespace WindowsGSM.Plugins
         public override string AppId => "412680"; // Game server appId, TheIsle is 412680
 
         // - Standard Constructor and properties
-        public TheIsle(ServerConfig serverData) : base(serverData) => base.serverData = _serverData = serverData;
+        public TheIsleLegacy(ServerConfig serverData) : base(serverData) => base.serverData = _serverData = serverData;
         private readonly ServerConfig _serverData;
         public string Error, Notice;
 
@@ -61,7 +61,9 @@ namespace WindowsGSM.Plugins
             if (await DownloadGameServerConfig(configPath, configPath))
             {
                 string configText = File.ReadAllText(configPath);
-                configText = configText.Replace("{{serverName}}", _serverData.ServerName);
+                configText = configText.Replace("{{session_name}}", _serverData.ServerName);
+                configText = configText.Replace("{{rcon_port}}", _serverData.ServerQueryPort);
+                configText = configText.Replace("{{max_players}}", _serverData.ServerMaxPlayer);
                 File.WriteAllText(configPath, configText);
             }
         }
