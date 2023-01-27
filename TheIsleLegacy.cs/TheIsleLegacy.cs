@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using WindowsGSM.Functions;
 using WindowsGSM.GameServer.Query;
 using WindowsGSM.GameServer.Engine;
 using System.IO;
 using System.Linq;
 using System.Net;
+
 
 namespace WindowsGSM.Plugins
 {
@@ -62,8 +64,6 @@ namespace WindowsGSM.Plugins
             {
                 string configText = File.ReadAllText(configPath);
                 configText = configText.Replace("{{session_name}}", _serverData.ServerName);
-                configText = configText.Replace("{{rcon_port}}", _serverData.ServerQueryPort);
-                configText = configText.Replace("{{max_players}}", _serverData.ServerMaxPlayer);
                 File.WriteAllText(configPath, configText);
             }
         }
@@ -97,7 +97,7 @@ namespace WindowsGSM.Plugins
             List<string> ThenyawVariations = new List<string>() { "Thenyaw", "thenyaw", "ThenyawIsland", "Thenyaw Island" };
             List<string> TestlevelVariations = new List<string>() { "testlevel", "DV_TestLevel", "dm", "Test Level", "Dev Map", "Dev level" };
 
-            string param = string.IsNullOrWhiteSpace(_serverData.ServerMap) ? string.Empty : $"{_serverData.ServerMap}";
+            string param = "";
             if (IsleV3Variations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
             {
                 param += "/Game/TheIsle/Maps/Landscape3/Isle_V3";
@@ -110,11 +110,18 @@ namespace WindowsGSM.Plugins
             {
                 param += "/Game/TheIsle/Maps/Developer/DV_TestLevel";
             }
+            else
+            {
+                param = string.Empty;
+            }
 
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MultiHome={_serverData.ServerIP}";
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?Port={_serverData.ServerPort}";
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?QueryPort={_serverData.ServerQueryPort}";
-            param += $"?{_serverData.ServerParam}? -nosteamclient -game -server -log";
+            param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MaxPlayers={_serverData.ServerMaxPlayer}";
+            param += $"?{_serverData.ServerParam} -nosteamclient -game -server -log";
+
+            System.Console.WriteLine(param);
 
 
 
@@ -175,7 +182,7 @@ namespace WindowsGSM.Plugins
         }
 
 
-		// - Stop server function
+        // - Stop server function
         public async Task Stop(Process p)
         {
             await Task.Run(() =>
@@ -184,7 +191,7 @@ namespace WindowsGSM.Plugins
                 {
                     Functions.ServerConsole.SetMainWindow(p.MainWindowHandle);
                     Functions.ServerConsole.SendWaitToMainWindow("^c");
-					
+
                 }
                 else
                 {
