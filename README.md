@@ -79,6 +79,8 @@ adminListThree could eventually be DM/Event related admins
 `game=Survival;adminListOne=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlist.txt` or
 `game=Sandbox;adminListOne=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlist.txt;adminListTwo=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlisttwo.txt`
 
+**OBS: Remember if you use Admin Lists to adjust them into your own Steam IDs. The Steam IDs & lists provided in the examples are only for an example purpose**
+
 # License
 
 This project is licensed under the MIT License - see the <a href="https://github.com/menix1337/WindowsGSM.TheIsleLegacy/blob/main/LICENSE">LICENSE.md</a> file for details
