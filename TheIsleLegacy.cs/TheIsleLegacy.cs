@@ -45,8 +45,8 @@ namespace WindowsGSM.Plugins
 
 
         // - Game server default values
-        public string Port = "7777"; // Default port
-        public string QueryPort = "27020"; // Default query port
+        public string Port = "6777"; // Default port - adjusted from 7777 to 6777 to avoid accidently overlapping with other Unreal Engine Servers by default.
+        public string QueryPort = "6778"; // ^
         public string Defaultmap = "Isle V3"; // Default map name
         public string Maxplayers = "150"; // Default maxplayers
         public string Additional = ""; // Additional server start parameter
@@ -205,7 +205,7 @@ namespace WindowsGSM.Plugins
                 param = string.Empty;
             }
 
-
+            //since the ServerStartParam can have multiple things here (such as adminLists) we divide it up using GetGameMode - to make sure we only put the gamemode into the actual Start Param of our game server. GetGameMode() splits out the relevant information to specify gamemode
             string gameMode = await GetGameMode(_serverData.ServerParam);
 
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MultiHome={_serverData.ServerIP}";
