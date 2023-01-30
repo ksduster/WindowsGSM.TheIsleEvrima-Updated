@@ -9,7 +9,7 @@
 - Gamemode (Surival / Sandbox) selection
 - Admin lists\*
 
-\*Admin lists is a way for you to support having one or multiple text files (Admin lists are textfiles with lines of Steam IDs) and the ability to add one or multiple per server, leaving the server owners only having to update a a single text file - to update all the servers you want, with your admins
+\*Admin lists is a optional way for you to support having one or multiple text files (Admin lists are textfiles with lines of Steam IDs) and the ability to add one or multiple per server, leaving the server owners only having to update a a single text file - to update all the servers you want, with your admins
 
 # The Game
 
