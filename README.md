@@ -37,9 +37,9 @@ Since Legacy has multiple maps you can select between, you can select by using a
 
 # Game Mode Selection
 
-To select either Sandbox or Survival game mode, add in **game=Sandbox** or **game=Survival** as the **Server Start Param**
+To select either Sandbox or Survival game mode, add in `game=Sandbox` or `game=Survival` as the **Server Start Param**
 
-- if no game mode is specified, it will default to Survival
+- If no game mode is specified, it will default to Survival
 
 # Admin Lists (Not required!)
 
@@ -48,11 +48,11 @@ This means if you are a hoster having multiple servers, and you dislike having t
 
 1. In the servers Start Param option field add in the following (\*Examples with my test files, use your own!)
 
-- adminListOne=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlist.txt
+- `adminListOne=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlist.txt`
 
 You can add multiple lists by adding a semi-colon (**;**)with a new list entry such as:
 
-- adminListOne=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlist.txt;adminListTwo=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlisttwo.txt
+- `adminListOne=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlist.txt;adminListTwo=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlisttwo.txt`
 
 -- And if you wish you can expand to this list with AdminListThree, AdminListFour - followed by the links as the examples above... etc (There should be no limit in theory)
 
@@ -75,9 +75,9 @@ adminListThree could eventually be DM/Event related admins
 
 # So how could a final Server Start Param look? (With and Without the usage of admin lists)
 
-game=Survival or
-game=Survival;adminListOne=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlist.txt
-game=Survival;adminListOne=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlist.txt;adminListTwo=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlisttwo.txt
+`game=Survival` or
+`game=Survival;adminListOne=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlist.txt`
+`game=Sandbox;adminListOne=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlist.txt;adminListTwo=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlisttwo.txt`
 
 # License
 
