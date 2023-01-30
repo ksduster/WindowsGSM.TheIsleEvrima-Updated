@@ -50,7 +50,7 @@ This means if you are a hoster having multiple servers, and you dislike having t
 
 - `adminListOne=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlist.txt`
 
-You can add multiple lists by adding a semi-colon (`**;**`)with a new list entry such as:
+You can add multiple lists by adding a semi-colon (`;`)with a new list entry such as:
 
 - `adminListOne=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlist.txt;adminListTwo=https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/Other/adminlisttwo.txt`
 
