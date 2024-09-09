@@ -1,19 +1,18 @@
-# WindowsGSM.TheIsleLegacy
+# WindowsGSM.TheIsleEvrima-Updated
 
-🧩WindowsGSM plugin that provides TheIsle Legacy Dedicated server support!
+🧩WindowsGSM plugin that provides TheIsle Evrima-updated Dedicated server support!
 
-- A modified version of [@dkdue](https://www.github.com/dkdue)'s [Evrima](https://github.com/dkdue/WindowsGSM.TheIsle) version to benefit the good old Legacy Version, with some additions.
+- A modified version of [@dkdue](https://www.github.com/dkdue)'s [Evrima](https://github.com/dkdue/WindowsGSM.TheIsle) version to benefit the good old Legacy Version, with some additions. Original modifified version for Legacy from @Tag, tag, tag,
 
 # This version adds in support for:
 
-- Gamemode (Surival / Sandbox) selection
 - Admin lists\*
 
 \*Admin lists is a optional way for you to support having one or multiple text files (Admin lists are textfiles with lines of Steam IDs) and the ability to add one or multiple per server, leaving the server owners only having to update a a single text file - to update all the servers you want, with your admins
 
 # The Game
 
-https://store.steampowered.com/app/376210/The_Isle/ - Legacy Version (Not Evrima!)
+https://store.steampowered.com/app/376210/The_Isle/ (Beta - Evrima!)
 
 # Requirements
 
@@ -25,23 +24,11 @@ WindowsGSM >= 1.21.0
 2. Move TheIsleLegacy.cs folder to plugins folder
 3. Click [RELOAD PLUGINS] button or restart WindowsGSM
 
-# Map Selection (Legacy has multiple maps you can select)
+# Map Selection (Evrima currently only has one)
 
-Since Legacy has multiple maps you can select between, you can select by using any of the following as the specific Servers Map Parameter:
+Gateway
 
-**Isle V3**: Isle V3, isle v3, v3, islev3
-
-**Thenyaw**: Thenyaw, thenyaw, ThenyawIsland, Thenyaw Island
-
-**DV_TestLevel**: testlevel, DV_TestLevel, dm, Test Level, Dev Map, Dev level
-
-# Game Mode Selection
-
-To select either Sandbox or Survival game mode, add in `game=Sandbox` or `game=Survival` as the **Server Start Param**
-
-- If no game mode is specified, it will default to Survival
-
-# Admin Lists (Not required!)
+# Admin Lists (Not required!)   (developed by @tag, tag, tag)
 
 This plugin has the ability for the server hosters to specify one or multiple text files with lists of SteamIDs (Currently only tested with RAW Github Repo files) adding them automatically to the servers Game.ini file.
 This means if you are a hoster having multiple servers, and you dislike having to spend hours on adjusting each Game.ini file for adding/removings - this might be an option for you.
