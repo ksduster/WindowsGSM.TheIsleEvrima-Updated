@@ -213,7 +213,7 @@ namespace WindowsGSM.Plugins
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?QueryPort={_serverData.ServerQueryPort}";
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MaxPlayers={_serverData.ServerMaxPlayer}";
             // param += $"?{gameMode} -nosteamclient -game -server -log"; // there is currently only one game mode for Evrima
-           param += $" -nosteamclient -game -server -log -ini:Engine:[EpicOnlineServices]:DedicatedServerClientId=xyza7891gk5PRo3J7G9puCJGFJjmEguW -ini:Engine:[EpicOnlineServices]:DedicatedServerClientSecret=pKWl6t5i9NJK8gTpVlAxzENZ65P8hYzodV8Dqe5Rlc8 | set /P "="";
+           param += $"?-nosteamclient -game -server -log";
 
             // Prepare Process
             var p = new Process
