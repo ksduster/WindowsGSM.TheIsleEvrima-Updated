@@ -2,7 +2,7 @@
 
 🧩WindowsGSM plugin that provides TheIsle Evrima-updated Dedicated server support!
 
-- A modified version of [@dkdue](https://www.github.com/dkdue)'s [Evrima](https://github.com/dkdue/WindowsGSM.TheIsle) version to benefit the good old Legacy Version, with some additions. Original modifified version for Legacy from @Tag, tag, tag,
+- A modified version of [@dkdue](https://www.github.com/dkdue)'s [Evrima](https://github.com/dkdue/WindowsGSM.TheIsle) version to benefit the good old Legacy Version, with some additions. Original modifified version for Legacy from [@menix1337](https://www.github.com/menix1337)'s [Legacy](https://github.com/menix1337/WindowsGSM.TheIsleLegacy)
 
 # This version adds in support for:
 
@@ -28,7 +28,7 @@ WindowsGSM >= 1.21.0
 
 Gateway
 
-# Admin Lists (Not required!)   (developed by @tag, tag, tag)
+# Admin Lists (Not required!)   Credit: [@menix1337](https://www.github.com/menix1337)'s [Legacy](https://github.com/menix1337/WindowsGSM.TheIsleLegacy)
 
 This plugin has the ability for the server hosters to specify one or multiple text files with lists of SteamIDs (Currently only tested with RAW Github Repo files) adding them automatically to the servers Game.ini file.
 This means if you are a hoster having multiple servers, and you dislike having to spend hours on adjusting each Game.ini file for adding/removings - this might be an option for you.
