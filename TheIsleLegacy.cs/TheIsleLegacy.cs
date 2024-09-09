@@ -13,32 +13,32 @@ using System.Text.RegularExpressions;
 
 namespace WindowsGSM.Plugins
 {
-    public class TheIsleLegacy : SteamCMDAgent
+    public class TheIsle : SteamCMDAgent
     {
         // - Plugin Details
         public Plugin Plugin = new Plugin
         {
-            name = "WindowsGSM.TheIsleLegacy", // WindowsGSM.XXXX
-            author = "MENIX",
-            description = "WindowsGSM plugin for supporting TheIsle Legacy Dedicated Server",
+            name = "WindowsGSM.TheIsleEvrima-Updated", // WindowsGSM.XXXX
+            author = "ksduster",
+            description = "WindowsGSM plugin for supporting TheIsle Evrima Dedicated Server",
             version = "1.0",
-            url = "https://github.com/menix1337/WindowsGSM.TheIsleLegacy", // Github repository link (Best practice)
+            url = "https://github.com/ksduster/WindowsGSM.TheIsleEvrima-Updated", // Github repository link (Best practice)
             color = "#34c9eb" // Color Hex
         };
 
         // - Settings properties for SteamCMD installer
         public override bool loginAnonymous => true;
-        public override string AppId => "412680"; // Game server appId, TheIsle is 412680
+        public override string AppId => "412680 -beta evrima"; // Game server appId, TheIsle is 412680
 
         // - Standard Constructor and properties
-        public TheIsleLegacy(ServerConfig serverData) : base(serverData) => base.serverData = _serverData = serverData;
+        public TheIsle(ServerConfig serverData) : base(serverData) => base.serverData = _serverData = serverData;
         private readonly ServerConfig _serverData;
         public string Error, Notice;
 
 
         // - Game server Fixed variables
         public override string StartPath => @"TheIsle\Binaries\Win64\TheIsleServer-Win64-Shipping.exe"; // Game server start path
-        public string FullName = "The Isle Legacy Dedicated Server"; // Game server FullName
+        public string FullName = "The Isle Evrima Dedicated Server"; // Game server FullName
         public bool AllowsEmbedConsole = true;  // Does this server support output redirect?
         public int PortIncrements = 1; // This tells WindowsGSM how many ports should skip after installation
         public object QueryMethod = new A2S(); // Query method should be use on current server type. Accepted value: null or new A2S() or new FIVEM() or new UT3()
@@ -47,8 +47,8 @@ namespace WindowsGSM.Plugins
         // - Game server default values
         public string Port = "6777"; // Default port - adjusted from 7777 to 6777 to avoid accidently overlapping with other Unreal Engine Servers by default.
         public string QueryPort = "6000"; //Adjusted to start at 6000 to avoid overlapping in WGSM
-        public string Defaultmap = "Isle V3"; // Default map name
-        public string Maxplayers = "150"; // Default maxplayers
+        public string Defaultmap = "Gateway"; // Default map name
+        public string Maxplayers = "75"; // Default maxplayers
         public string Additional = ""; // Additional server start parameter
 
 
@@ -101,7 +101,7 @@ namespace WindowsGSM.Plugins
             if (await adaptGameIniOnLaunch(configPath, configPath))
             {
                 //Server Name Values
-                string section = "/Script/TheIsle.IGameSession";
+                string section = "/Script/TheIsle.TIGameSession";
                 string newServerNameValue = _serverData.ServerName;
                 string serverNameKey = "ServerName";
 
@@ -183,22 +183,22 @@ namespace WindowsGSM.Plugins
             /Game/TheIsle/Maps/Thenyaw_Island/Thenyaw_Island for Thenyaw
             /Game/TheIsle/Maps/Developer/DV_TestLevel for Dev Map
             */
-            List<string> IsleV3Variations = new List<string>() { "Isle V3", "isle v3", "v3", "islev3" };
+            List<string> GatewayVariations = new List<string>() { "Gateway", "GATEWAY", "gateway", "evrima" };
             List<string> ThenyawVariations = new List<string>() { "Thenyaw", "thenyaw", "ThenyawIsland", "Thenyaw Island" };
             List<string> TestlevelVariations = new List<string>() { "testlevel", "DV_TestLevel", "dm", "Test Level", "Dev Map", "Dev level" };
 
             string param = "";
-            if (IsleV3Variations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
+            if (GatewayVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
             {
-                param += "/Game/TheIsle/Maps/Landscape3/Isle_V3";
+                param += "/Game/TheIsle/Maps/Game/Gateway/Gateway";
             }
             else if (ThenyawVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
             {
-                param += "/Game/TheIsle/Maps/Thenyaw_Island/Thenyaw_Island";
+                param += "/Game/TheIsle/Maps/Game/Gateway/Gateway";
             }
             else if (TestlevelVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
             {
-                param += "/Game/TheIsle/Maps/Developer/DV_TestLevel";
+                param += "/Game/TheIsle/Maps/Game/Gateway/Gateway";
             }
             else
             {
@@ -206,13 +206,14 @@ namespace WindowsGSM.Plugins
             }
 
             //since the ServerStartParam can have multiple things here (such as adminLists) we divide it up using GetGameMode - to make sure we only put the gamemode into the actual Start Param of our game server. GetGameMode() splits out the relevant information to specify gamemode
-            string gameMode = await GetGameMode(_serverData.ServerParam);
+           // string gameMode = await GetGameMode(_serverData.ServerParam);  //game mode is current deprecited for Evrima
 
-            param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MultiHome={_serverData.ServerIP}";
+            // param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MultiHome={_serverData.ServerIP}";
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?Port={_serverData.ServerPort}";
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?QueryPort={_serverData.ServerQueryPort}";
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MaxPlayers={_serverData.ServerMaxPlayer}";
-            param += $"?{gameMode} -nosteamclient -game -server -log";
+            // param += $"?{gameMode} -nosteamclient -game -server -log"; // there is currently only one game mode for Evrima
+           param += $"?listen -nosteamclient -game -server -log";
 
             // Prepare Process
             var p = new Process
@@ -333,26 +334,26 @@ namespace WindowsGSM.Plugins
             }
             return File.Exists(filePath);
         }
+//  Game mode is depreciated in Evrima
+        // public static async Task<string> GetGameMode(string serverData)
+        // {
+        //    string defaultGameMode = "game=Survival";
+        //    string[] parts = serverData.Split(';');
+       //     foreach (var part in parts)
+        //    {
+         //       if (part.StartsWith("game=", StringComparison.OrdinalIgnoreCase))
+         //       {
+         //           if (part.Equals("game=Survival", StringComparison.OrdinalIgnoreCase) ||
+         //               part.Equals("game=Sandbox", StringComparison.OrdinalIgnoreCase))
+         //           {
+         //               defaultGameMode = part;
+         //               break;
+         //           }
+         //       }
+         //   }
 
-        public static async Task<string> GetGameMode(string serverData)
-        {
-            string defaultGameMode = "game=Survival";
-            string[] parts = serverData.Split(';');
-            foreach (var part in parts)
-            {
-                if (part.StartsWith("game=", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (part.Equals("game=Survival", StringComparison.OrdinalIgnoreCase) ||
-                        part.Equals("game=Sandbox", StringComparison.OrdinalIgnoreCase))
-                    {
-                        defaultGameMode = part;
-                        break;
-                    }
-                }
-            }
-
-            return defaultGameMode;
-        }
+         //   return defaultGameMode;
+       // }
 
         public static async Task UpdateAdminList(string _serverData, string gameIniPath)
         {
@@ -389,8 +390,8 @@ namespace WindowsGSM.Plugins
             if (combinedAdminList.Count > 0)
             {
                 var lines = File.ReadAllLines(gameIniPath).ToList();
-                int startIndex = lines.FindIndex(x => x.StartsWith("[/Script/TheIsle.IGameSession]"));
-                int endIndex = lines.FindIndex(startIndex, x => x.StartsWith("[/script/theisle.igamemode]"));
+                int startIndex = lines.FindIndex(x => x.StartsWith("[/Script/TheIsle.TIGameStateBase]"));
+                int endIndex = lines.FindIndex(startIndex, x => x.StartsWith("WhitelistIDs="));
                 int currentIndex = startIndex + 1;
                 while (currentIndex < endIndex)
                 {
