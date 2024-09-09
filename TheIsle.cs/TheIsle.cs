@@ -213,7 +213,7 @@ namespace WindowsGSM.Plugins
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?QueryPort={_serverData.ServerQueryPort}";
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MaxPlayers={_serverData.ServerMaxPlayer}";
             // param += $"?{gameMode} -nosteamclient -game -server -log"; // there is currently only one game mode for Evrima
-           param += $"?-nosteamclient -game -server -log";
+            param += $"?{_serverData.ServerParam}? -nosteamclient -game -server -log";
 
             // Prepare Process
             var p = new Process
@@ -270,7 +270,7 @@ namespace WindowsGSM.Plugins
         }
 
 
-        // - Stop server function
+	// - Stop server function
         public async Task Stop(Process p)
         {
             await Task.Run(() =>
@@ -279,7 +279,7 @@ namespace WindowsGSM.Plugins
                 {
                     Functions.ServerConsole.SetMainWindow(p.MainWindowHandle);
                     Functions.ServerConsole.SendWaitToMainWindow("^c");
-
+					
                 }
                 else
                 {
