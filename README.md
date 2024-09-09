@@ -2,7 +2,7 @@
 
 🧩WindowsGSM plugin that provides TheIsle Evrima-updated Dedicated server support!
 
-- A modified version of [@dkdue](https://www.github.com/dkdue)'s [Evrima](https://github.com/dkdue/WindowsGSM.TheIsle) version to benefit the good old Legacy Version, with some additions. Original modifified version for Legacy from [@menix1337](https://www.github.com/menix1337)'s [Legacy](https://github.com/menix1337/WindowsGSM.TheIsleLegacy)
+- A modified version of [@menix1337](https://www.github.com/menix1337)'s [Legacy](https://github.com/menix1337/WindowsGSM.TheIsleLegacy) 
 
 # This version adds in support for:
 
