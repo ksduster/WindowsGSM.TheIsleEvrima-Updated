@@ -303,7 +303,7 @@ namespace WindowsGSM.Plugins
             {
                 using (WebClient webClient = new WebClient())
                 {
-                    await webClient.DownloadFileTaskAsync($"https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/TheIsleLegacy/Game.ini", filePath);
+                    await webClient.DownloadFileTaskAsync($"https://raw.githubusercontent.com/ksduster/The-Isle-Evrima-ini/main/Game.ini", filePath);
                 }
             }
             catch (Exception e)
@@ -325,7 +325,7 @@ namespace WindowsGSM.Plugins
                 {
                     using (WebClient webClient = new WebClient())
                     {
-                        await webClient.DownloadFileTaskAsync($"https://raw.githubusercontent.com/menix1337/WindowsGSM.configs/main/TheIsleLegacy/Game.ini", filePath);
+                        await webClient.DownloadFileTaskAsync($"https://raw.githubusercontent.com/ksduster/The-Isle-Evrima-ini/main/Game.ini", filePath);
                     }
                 }
                 catch (Exception e) {
