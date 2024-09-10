@@ -41,13 +41,13 @@ namespace WindowsGSM.Plugins
         public string FullName = "The Isle Evrima Dedicated Server"; // Game server FullName
         public bool AllowsEmbedConsole = true;  // Does this server support output redirect?
         public int PortIncrements = 1; // This tells WindowsGSM how many ports should skip after installation
-        public object QueryMethod = new A2S(); // Query method should be use on current server type. Accepted value: null or new A2S() or new FIVEM() or new UT3()
+        public object QueryMethod = null; // Query method should be use on current server type. Accepted value: null or new A2S() or new FIVEM() or new UT3()
 
 
         // - Game server default values
         public string Port = "6777"; // Default port - adjusted from 7777 to 6777 to avoid accidently overlapping with other Unreal Engine Servers by default.
-        public string QueryPort = "6000"; //Adjusted to start at 6000 to avoid overlapping in WGSM
-        public string Defaultmap = "Gateway"; // Default map name
+        public string QueryPort = "NA"; //Adjusted to start at 6000 to avoid overlapping in WGSM
+        public string Defaultmap = ""; // Default map name
         public string Maxplayers = "75"; // Default maxplayers
         public string Additional = ""; // Additional server start parameter
 
@@ -183,34 +183,34 @@ namespace WindowsGSM.Plugins
             /Game/TheIsle/Maps/Thenyaw_Island/Thenyaw_Island for Thenyaw
             /Game/TheIsle/Maps/Developer/DV_TestLevel for Dev Map
             */
-            List<string> GatewayVariations = new List<string>() { "Gateway", "GATEWAY", "gateway", "evrima" };
-            List<string> ThenyawVariations = new List<string>() { "Thenyaw", "thenyaw", "ThenyawIsland", "Thenyaw Island" };
-            List<string> TestlevelVariations = new List<string>() { "testlevel", "DV_TestLevel", "dm", "Test Level", "Dev Map", "Dev level" };
+            //List<string> GatewayVariations = new List<string>() { "Gateway", "GATEWAY", "gateway", "evrima" };
+           // List<string> ThenyawVariations = new List<string>() { "Thenyaw", "thenyaw", "ThenyawIsland", "Thenyaw Island" };
+           // List<string> TestlevelVariations = new List<string>() { "testlevel", "DV_TestLevel", "dm", "Test Level", "Dev Map", "Dev level" };
 
-            string param = "";
-            if (GatewayVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
-            {
-                param += "/Game/TheIsle/Maps/Game/Gateway/Gateway";
-            }
-            else if (ThenyawVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
-            {
-                param += "/Game/TheIsle/Maps/Game/Gateway/Gateway";
-            }
-            else if (TestlevelVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
-            {
-                param += "/Game/TheIsle/Maps/Game/Gateway/Gateway";
-            }
-            else
-            {
-                param = string.Empty;
-            }
+            //string param = "";
+           // if (GatewayVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
+            //{
+            //    param += "/Game/TheIsle/Maps/Game/Gateway/Gateway";
+            //}
+            //else if (ThenyawVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
+            //{
+            //    param += "/Game/TheIsle/Maps/Game/Gateway/Gateway";
+            //}
+           // else if (TestlevelVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
+           // {
+            //    param += "/Game/TheIsle/Maps/Game/Gateway/Gateway";
+            //}
+            //else
+            //{
+                //param = string.Empty;
+            //}
 
             //since the ServerStartParam can have multiple things here (such as adminLists) we divide it up using GetGameMode - to make sure we only put the gamemode into the actual Start Param of our game server. GetGameMode() splits out the relevant information to specify gamemode
            // string gameMode = await GetGameMode(_serverData.ServerParam);  //game mode is current deprecited for Evrima
 
             // param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MultiHome={_serverData.ServerIP}";
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?Port={_serverData.ServerPort}";
-            param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?QueryPort={_serverData.ServerQueryPort}";
+           // param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?QueryPort={_serverData.ServerQueryPort}";
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MaxPlayers={_serverData.ServerMaxPlayer}";
             // param += $"?{gameMode} -nosteamclient -game -server -log"; // there is currently only one game mode for Evrima
             param += $"?{_serverData.ServerParam}? -nosteamclient -game -server -log";
