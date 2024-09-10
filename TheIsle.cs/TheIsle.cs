@@ -137,7 +137,7 @@ namespace WindowsGSM.Plugins
 
 
             /*
-               Update the Game.ini ServerAdmins= with pre-set adminfiles containing Steam IDS if existing.
+               Update the Game.ini AdminsSteamIDs= with pre-set adminfiles containing Steam IDS if existing.
                
                Admin List Mode - OBS: NOT REQUIRED
                - Our goal here is to make adding admins on multiple servers easier than having to manually adjust each server every time they change admins
@@ -165,11 +165,11 @@ namespace WindowsGSM.Plugins
                - just make sure each list starts with adminList
 
                Will combine into a total of this when put into the game ini:
-               ServerAdmins=76561197960419839
-               ServerAdmins=76561197960419840
-               ServerAdmins=76561197960419841
-               ServerAdmins=76561197960419842
-               ServerAdmins=76561197960419843
+               AdminsSteamIDs=76561197960419839
+               AdminsSteamIDs=76561197960419840
+               AdminsSteamIDs=76561197960419841
+               AdminsSteamIDs=76561197960419842
+               AdminsSteamIDs=76561197960419843
 
                OBS: If admin list is specified, for each time you restart the server it will clear out all admins and re-apply accordingly from the list; if the source .txt files can be found - otherwise it will keep the original game.ini without refreshing the admins (In case the source is down so you suddenly dont have admin)
             */
@@ -394,7 +394,7 @@ namespace WindowsGSM.Plugins
                 int currentIndex = startIndex + 1;
                 while (currentIndex < endIndex)
                 {
-                    if (lines[currentIndex].StartsWith("ServerAdmins="))
+                    if (lines[currentIndex].StartsWith("AdminsSteamIDs="))
                     {
                         lines.RemoveAt(currentIndex);
                         endIndex--;
@@ -407,7 +407,7 @@ namespace WindowsGSM.Plugins
                 int insertIndex = endIndex;
                 foreach (string adminId in combinedAdminList)
                 {
-                    lines.Insert(insertIndex, $"ServerAdmins={adminId}");
+                    lines.Insert(insertIndex, $"AdminsSteamIDs={adminId}");
                     insertIndex++;
                 }
                 File.WriteAllLines(gameIniPath, lines);
