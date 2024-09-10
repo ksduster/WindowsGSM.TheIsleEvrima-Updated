@@ -31,7 +31,7 @@ namespace WindowsGSM.Plugins
         public override string AppId => "412680 -beta evrima"; // Game server appId, TheIsle is 412680
 
         // - Standard Constructor and properties
-        public TheIsleLegacy(ServerConfig serverData) : base(serverData) => base.serverData = _serverData = serverData;
+        public TheIsle(ServerConfig serverData) : base(serverData) => base.serverData = _serverData = serverData;
         private readonly ServerConfig _serverData;
         public string Error, Notice;
 
