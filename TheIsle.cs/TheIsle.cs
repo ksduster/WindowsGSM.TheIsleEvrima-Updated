@@ -46,7 +46,7 @@ namespace WindowsGSM.Plugins
 
         // - Game server default values
         public string Port = "6777"; // Default port - adjusted from 7777 to 6777 to avoid accidently overlapping with other Unreal Engine Servers by default.
-       // public string QueryPort = ""; //Adjusted to start at 6000 to avoid overlapping in WGSM
+        public string QueryPort = "6000"; //Adjusted to start at 6000 to avoid overlapping in WGSM
        // public string Defaultmap = ""; // Default map name
         public string Maxplayers = "75"; // Default maxplayers
         public string Additional = ""; // Additional server start parameter
