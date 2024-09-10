@@ -74,7 +74,7 @@ namespace WindowsGSM.Plugins
         {
             // Check for files in Win64
             string win64 = Path.Combine(ServerPath.GetServersServerFiles(_serverData.ServerID, @"TheIsle\Binaries\Win64\"));
-            string[] neededFiles = { "steamclient64.dll", "tier0_s64.dll", "vstdlib_s64.dll" };
+            string[] neededFiles = { "tbb.dll", "tbb12.dll", "tbbmalloc.dll" };
 
             foreach (string file in neededFiles)
             {
