@@ -13,7 +13,7 @@ using System.Text.RegularExpressions;
 
 namespace WindowsGSM.Plugins
 {
-    public class TheIsleLegacy : SteamCMDAgent
+    public class TheIsle : SteamCMDAgent
     {
         // - Plugin Details
         public Plugin Plugin = new Plugin
