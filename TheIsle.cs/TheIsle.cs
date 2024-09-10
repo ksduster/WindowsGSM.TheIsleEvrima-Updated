@@ -38,7 +38,7 @@ namespace WindowsGSM.Plugins
 
         // - Game server Fixed variables
         public override string StartPath => @"TheIsle\Binaries\Win64\TheIsleServer-Win64-Shipping.exe"; // Game server start path
-        public string FullName = "The Isle Legacy Dedicated Server"; // Game server FullName
+        public string FullName = "The Isle Evrima Dedicated Server"; // Game server FullName
         public bool AllowsEmbedConsole = true;  // Does this server support output redirect?
         public int PortIncrements = 1; // This tells WindowsGSM how many ports should skip after installation
         public object QueryMethod = new A2S(); // Query method should be use on current server type. Accepted value: null or new A2S() or new FIVEM() or new UT3()
