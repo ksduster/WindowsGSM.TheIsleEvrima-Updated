@@ -21,7 +21,7 @@ namespace WindowsGSM.Plugins
             name = "WindowsGSM.TheIsle", // WindowsGSM.XXXX
             author = "ksduster",
             description = "WindowsGSM plugin for supporting TheIsle Evrima Dedicated Server",
-            version = "1.1",
+            version = "1.2",
             url = "https://github.com/ksduster/WindowsGSM.TheIsleEvrima-Updated", // Github repository link (Best practice)
             color = "#34c9eb" // Color Hex
         };
@@ -39,7 +39,7 @@ namespace WindowsGSM.Plugins
         // - Game server Fixed variables
         public override string StartPath => @"TheIsle\Binaries\Win64\TheIsleServer-Win64-Shipping.exe"; // Game server start path
         public string FullName = "The Isle Evrima Dedicated Server"; // Game server FullName
-        public bool AllowsEmbedConsole = false;  // Does this server support output redirect?
+        public bool AllowsEmbedConsole = false;  // Does this server support output redirect?  // Evrima nolonger outputs to console
         public int PortIncrements = 1; // This tells WindowsGSM how many ports should skip after installation
         public object QueryMethod = new A2S(); // Query method should be use on current server type. Accepted value: null or new A2S() or new FIVEM() or new UT3()
 
@@ -53,7 +53,7 @@ namespace WindowsGSM.Plugins
 
 
         // - Create a default cfg for the game server after installation
-        public async void CreateServerCFG()
+/*         public async void CreateServerCFG()
         {
             string configPath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, @"TheIsle\Saved\Config\WindowsServer\Game.ini");
             Directory.CreateDirectory(Path.GetDirectoryName(configPath));
@@ -67,7 +67,44 @@ namespace WindowsGSM.Plugins
                 configText = configText.Replace("{{session_name}}", _serverData.ServerName);
                 File.WriteAllText(configPath, configText);
             }
+        } */
+
+        // - Create a default cfg for the game server after installation for game.ini and engine.ini
+        public async void CreateServerCFG()
+        {
+            // Game.ini path
+            string gameIniPath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, @"TheIsle\Saved\Config\WindowsServer\Game.ini");
+            Directory.CreateDirectory(Path.GetDirectoryName(gameIniPath));
+
+            // Engine.ini path
+            string engineIniPath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, @"TheIsle\Saved\Config\WindowsServer\Engine.ini");
+            Directory.CreateDirectory(Path.GetDirectoryName(engineIniPath));
+            
+            // Download Game.ini if missing
+            if (await DownloadGameServerConfig(gameIniPath, gameIniPath, "Game"))
+            {
+                string configText = File.ReadAllText(gameIniPath);
+                configText = configText.Replace("{{session_name}}", _serverData.ServerName);
+                File.WriteAllText(gameIniPath, configText);
+            }
+
+            // Download Engine.ini if missing
+            if (!File.Exists(engineIniPath))
+            {
+                try
+                {
+                    using (WebClient webClient = new WebClient())
+                    {
+                        await webClient.DownloadFileTaskAsync($"https://raw.githubusercontent.com/ksduster/The-Isle-Evrima-ini/main/Engine.ini", engineIniPath);
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Github.DownloadEngineIniConfig {e}");
+                }
+            }
         }
+
 
         // - Start server function, return its Process to WindowsGSM
         public async Task<Process> Start()
@@ -94,18 +131,24 @@ namespace WindowsGSM.Plugins
             - If existing, we will update the server name from WGSM into Game.ini
             
              */
+            string engineIniPath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, @"TheIsle\Saved\Config\WindowsServer\Engine.ini");
+            Directory.CreateDirectory(Path.GetDirectoryName(engineIniPath));
 
-            string configPath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, @"TheIsle\Saved\Config\WindowsServer\Game.ini");
-            Directory.CreateDirectory(Path.GetDirectoryName(configPath));
+            if (await adaptIniOnLaunch(engineIniPath, engineIniPath, "Engine"));
+            {
+            }
 
-            if (await adaptGameIniOnLaunch(configPath, configPath))
+            string gameIniPath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, @"TheIsle\Saved\Config\WindowsServer\Game.ini");
+            Directory.CreateDirectory(Path.GetDirectoryName(gameIniPath));
+
+            if (await adaptIniOnLaunch(gameIniPath, gameIniPath, "Game"))
             {
                 //Server Name Values
                 string section = "/Script/TheIsle.TIGameSession";
                 string newServerNameValue = _serverData.ServerName;
                 string serverNameKey = "ServerName";
 
-                string[] lines = File.ReadAllLines(configPath);
+                string[] lines = File.ReadAllLines(gameIniPath);
                 bool foundSection = false;
                 for (int i = 0; i < lines.Length; i++)
                 {
@@ -120,13 +163,13 @@ namespace WindowsGSM.Plugins
                         if (parts.Length >= 2 && !parts[1].Equals(newServerNameValue))
                         {
                             lines[i] = serverNameKey + "=" + newServerNameValue;
-                            File.WriteAllLines(configPath, lines);
-                            System.Diagnostics.Debug.WriteLine("Value updated in file: " + configPath);
+                            File.WriteAllLines(gameIniPath, lines);
+                            System.Diagnostics.Debug.WriteLine("Value updated in file: " + gameIniPath);
                             break;
                         }
                         else
                         {
-                            System.Diagnostics.Debug.WriteLine("Value already exists in file: " + configPath);
+                            System.Diagnostics.Debug.WriteLine("Value already exists in file: " + gameIniPath);
                             break;
                         }
                     } else {
@@ -174,7 +217,7 @@ namespace WindowsGSM.Plugins
                OBS: If admin list is specified, for each time you restart the server it will clear out all admins and re-apply accordingly from the list; if the source .txt files can be found - otherwise it will keep the original game.ini without refreshing the admins (In case the source is down so you suddenly dont have admin)
             */
 
-            await UpdateAdminList(_serverData.ServerParam, configPath);
+            await UpdateAdminList(_serverData.ServerParam, gameIniPath);
 
 
             /*
@@ -290,7 +333,7 @@ namespace WindowsGSM.Plugins
         }
 
         // Get ini files
-        public static async Task<bool> DownloadGameServerConfig(string fileSource, string filePath)
+/*         public static async Task<bool> DownloadGameServerConfig(string fileSource, string filePath)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
@@ -333,8 +376,96 @@ namespace WindowsGSM.Plugins
                 }
             }
             return File.Exists(filePath);
+        } */
+        // Get ini files
+        public static async Task<bool> DownloadGameServerConfig(string fileSource, string filePath, string iniType)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            string downloadUrl = iniType == "Game" 
+                ? $"https://raw.githubusercontent.com/ksduster/The-Isle-Evrima-ini/main/Game.ini"
+                : $"https://raw.githubusercontent.com/ksduster/The-Isle-Evrima-ini/main/Engine.ini"; // Add Engine.ini URL here
+
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    await webClient.DownloadFileTaskAsync(downloadUrl, filePath);
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine($"Github.DownloadGameServerConfig {e}");
+            }
+
+            return File.Exists(filePath);
         }
 
+        public static async Task<bool> adaptIniOnLaunch(string fileSource, string filePath, string iniType)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+            // if the file DOESN'T exist - lets re-create it.
+            if (!File.Exists(filePath))
+            {
+                try
+                {
+                    await DownloadGameServerConfig(fileSource, filePath, iniType); // Add iniType to specify Game or Engine
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Github.DownloadGameServerConfig {e}");
+                }
+            }
+            return File.Exists(filePath);
+        }
+        
+        /* public static async Task<bool> adaptIniOnLaunch(string fileSource, string gameIniPath, string engineIniPath)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(gameIniPath));
+            Directory.CreateDirectory(Path.GetDirectoryName(engineIniPath));
+
+            bool gameIniDownloaded = true;
+            bool engineIniDownloaded = true;
+
+            // Check if game.ini exists, and download it if missing.
+            if (!File.Exists(gameIniPath))
+            {
+                try
+                {
+                    await DownloadGameServerConfig(fileSource, gameIniPath, "Game");
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error downloading Game.ini: {e}");
+                    gameIniDownloaded = false;
+                }
+            }
+
+            // Check if engine.ini exists, and download it if missing.
+            if (!File.Exists(engineIniPath))
+            {
+                try
+                {
+                    await DownloadGameServerConfig(fileSource, engineIniPath, "Engine");
+                }
+                catch (Exception e)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error downloading Engine.ini: {e}");
+                    engineIniDownloaded = false;
+                }
+            }
+
+            return gameIniDownloaded && engineIniDownloaded;
+        } */
+
+
+
+// Game mode depreciated in Evrima. Will be cleaning this section out in future.
         /* public static async Task<string> GetGameMode(string serverData)
         {
             string defaultGameMode = "game=Survival";
