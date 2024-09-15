@@ -1,6 +1,6 @@
 # WindowsGSM.TheIsleEvrima-Updated
 
-🧩WindowsGSM plugin that provides TheIsle Evrima-updated Dedicated server support!
+🧩WindowsGSM plugin that provides TheIsle Evrima Dedicated server support! Updated for the newest Evrima version.
 
 - A modified version of [@menix1337](https://www.github.com/menix1337)'s [Legacy](https://github.com/menix1337/WindowsGSM.TheIsleLegacy) 
 
@@ -70,4 +70,4 @@ adminListThree could eventually be DM/Event related admins
 
 # License
 
-This project is licensed under the MIT License - see the <a href="https://github.com/menix1337/WindowsGSM.TheIsleLegacy/blob/main/LICENSE">LICENSE.md</a> file for details
+This project is licensed under the MIT License - see the <a href="https://raw.githubusercontent.com/ksduster/WindowsGSM.TheIsle/main/LICENSE">LICENSE.md</a> file for details
