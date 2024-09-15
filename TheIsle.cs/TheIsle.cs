@@ -124,12 +124,16 @@ namespace WindowsGSM.Plugins
             string gameIniPath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, @"TheIsle\Saved\Config\WindowsServer\Game.ini");
             Directory.CreateDirectory(Path.GetDirectoryName(gameIniPath));
 
-            if (await adaptIniOnLaunch(gameIniPath, gameIniPath, "Game"))
+            /* if (await adaptIniOnLaunch(gameIniPath, gameIniPath, "Game"))
             {
                 //Server Name Values
                 string section = "/Script/TheIsle.TIGameSession";
                 string newServerNameValue = _serverData.ServerName;
                 string serverNameKey = "ServerName";
+                
+                // Max Player Count Values
+                string newMaxPlayerValue = _serverData.ServerMaxPlayer;
+                string maxPlayerKey = "MaxPlayerCount";
 
                 string[] lines = File.ReadAllLines(gameIniPath);
                 bool foundSection = false;
@@ -159,7 +163,90 @@ namespace WindowsGSM.Plugins
                         continue;
                     }
                 }
+            } */
+            if (await adaptIniOnLaunch(gameIniPath, gameIniPath, "Game"))
+            {
+                //Server Name Values
+                string section = "/Script/TheIsle.TIGameSession";
+                string newServerNameValue = _serverData.ServerName;
+                string serverNameKey = "ServerName";
+
+                // Max Player Count Values
+                string newMaxPlayerValue = _serverData.ServerMaxPlayer;
+                string maxPlayerKey = "MaxPlayerCount";
+
+                string[] lines = File.ReadAllLines(gameIniPath);
+                bool foundSection = false;
+                bool serverNameUpdated = false;
+                bool maxPlayerCountUpdated = false;
+
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].Trim().Equals("[" + section + "]"))
+                    {
+                        foundSection = true;
+                        continue;
+                    }
+        
+                    if (foundSection)
+                    {
+                        // Update ServerName
+                        if (!serverNameUpdated && lines[i].Trim().StartsWith(serverNameKey))
+                        {
+                            string[] parts = lines[i].Split('=');
+                            if (parts.Length >= 2 && !parts[1].Equals(newServerNameValue))
+                            {
+                                lines[i] = serverNameKey + "=" + newServerNameValue;
+                                serverNameUpdated = true;
+                                System.Diagnostics.Debug.WriteLine("ServerName updated in file: " + gameIniPath);
+                            }
+                            else
+                            {
+                                serverNameUpdated = true; // Already up-to-date
+                            }
+                        }
+
+                        // Update MaxPlayerCount
+                        if (!maxPlayerCountUpdated && lines[i].Trim().StartsWith(maxPlayerKey))
+                        {
+                            string[] parts = lines[i].Split('=');
+                            if (parts.Length >= 2 && !parts[1].Equals(newMaxPlayerValue))
+                            {
+                                lines[i] = maxPlayerKey + "=" + newMaxPlayerValue;
+                                maxPlayerCountUpdated = true;
+                                System.Diagnostics.Debug.WriteLine("MaxPlayerCount updated in file: " + gameIniPath);
+                            }
+                            else
+                            {
+                                maxPlayerCountUpdated = true; // Already up-to-date
+                            }
+                        }
+
+                        // Break if both values are updated
+                        if (serverNameUpdated && maxPlayerCountUpdated)
+                        {
+                            File.WriteAllLines(gameIniPath, lines);
+                            break;
+                        }
+                    }
+                }
+
+                // If the MaxPlayerCount key doesn't exist, insert it after ServerName
+                if (foundSection && serverNameUpdated && !maxPlayerCountUpdated)
+                {
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        if (lines[i].Trim().StartsWith(serverNameKey))
+                        {
+                            lines[i] += Environment.NewLine + maxPlayerKey + "=" + newMaxPlayerValue;
+                            File.WriteAllLines(gameIniPath, lines);
+                            System.Diagnostics.Debug.WriteLine("MaxPlayerCount added after ServerName in file: " + gameIniPath);
+                            break;
+                        }
+                    }
+                }
             }
+
 
 
 
