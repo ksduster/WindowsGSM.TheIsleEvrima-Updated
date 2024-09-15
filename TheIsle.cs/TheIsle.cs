@@ -52,23 +52,6 @@ namespace WindowsGSM.Plugins
         public string Additional = ""; // Additional server start parameter
 
 
-        // - Create a default cfg for the game server after installation
-/*         public async void CreateServerCFG()
-        {
-            string configPath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, @"TheIsle\Saved\Config\WindowsServer\Game.ini");
-            Directory.CreateDirectory(Path.GetDirectoryName(configPath));
-
-            string name = String.Concat(FullName.Where(c => !Char.IsWhiteSpace(c)));
-
-            //Download Game.ini
-            if (await DownloadGameServerConfig(configPath, configPath))
-            {
-                string configText = File.ReadAllText(configPath);
-                configText = configText.Replace("{{session_name}}", _serverData.ServerName);
-                File.WriteAllText(configPath, configText);
-            }
-        } */
-
         // - Create a default cfg for the game server after installation for game.ini and engine.ini
         public async void CreateServerCFG()
         {
@@ -179,6 +162,7 @@ namespace WindowsGSM.Plugins
             }
 
 
+
             /*
                Update the Game.ini AdminsSteamIDs= with pre-set adminfiles containing Steam IDS if existing.
                
@@ -217,40 +201,15 @@ namespace WindowsGSM.Plugins
                OBS: If admin list is specified, for each time you restart the server it will clear out all admins and re-apply accordingly from the list; if the source .txt files can be found - otherwise it will keep the original game.ini without refreshing the admins (In case the source is down so you suddenly dont have admin)
             */
 
-            await UpdateAdminList(_serverData.ServerParam, gameIniPath);
-
-
-            /*
-            if server default map contains either Isle V3 or Thenyaw or DV_TestLevel then add the string
-            /Game/TheIsle/Maps/Landscape3/Isle_V3 for Isle V3
-            /Game/TheIsle/Maps/Thenyaw_Island/Thenyaw_Island for Thenyaw
-            /Game/TheIsle/Maps/Developer/DV_TestLevel for Dev Map
-            */
-            /* List<string> IsleV3Variations = new List<string>() { "Isle V3", "isle v3", "v3", "islev3" };
-            List<string> ThenyawVariations = new List<string>() { "Thenyaw", "thenyaw", "ThenyawIsland", "Thenyaw Island" };
-            List<string> TestlevelVariations = new List<string>() { "testlevel", "DV_TestLevel", "dm", "Test Level", "Dev Map", "Dev level" }; */
+            await UpdateSettings(_serverData.ServerParam, gameIniPath);
 
             string param = "";  
-			// Commented section below out as there is only 1 map option for TheIsle Evrima - 0.12.51.02 - Nov 14 2023
-            /* if (IsleV3Variations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
-            {
-                param += "/Game/TheIsle/Maps/Landscape3/Isle_V3";
-            }
-            else if (ThenyawVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
-            {
-                param += "/Game/TheIsle/Maps/Thenyaw_Island/Thenyaw_Island";
-            }
-            else if (TestlevelVariations.Any(x => x.Equals(_serverData.ServerMap, StringComparison.OrdinalIgnoreCase)))
-            {
-                param += "/Game/TheIsle/Maps/Developer/DV_TestLevel";
-            }
-            else */
+
             {
                 param = string.Empty;
             }
 
             //since the ServerStartParam can have multiple things here (such as adminLists) we divide it up using GetGameMode - to make sure we only put the gamemode into the actual Start Param of our game server. GetGameMode() splits out the relevant information to specify gamemode
-            // string gameMode = await GetGameMode(_serverData.ServerParam);   // game mode is depreciated
 
             //param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?MultiHome={_serverData.ServerIP}"; // depreciated for evrima
             param += string.IsNullOrWhiteSpace(_serverData.ServerPort) ? string.Empty : $"?Port={_serverData.ServerPort}";
@@ -333,58 +292,14 @@ namespace WindowsGSM.Plugins
         }
 
         // Get ini files
-/*         public static async Task<bool> DownloadGameServerConfig(string fileSource, string filePath)
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-
-            try
-            {
-                using (WebClient webClient = new WebClient())
-                {
-                    await webClient.DownloadFileTaskAsync($"https://raw.githubusercontent.com/ksduster/The-Isle-Evrima-ini/main/Game.ini", filePath);
-                }
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine($"Github.DownloadGameServerConfig {e}");
-            }
-
-            return File.Exists(filePath);
-        }
-
-        public static async Task<bool> adaptGameIniOnLaunch(string fileSource, string filePath)
-        {
-
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-            //if the file DOESN'T exist - lets re-create it.
-            if (!File.Exists(filePath))
-            {
-                try
-                {
-                    using (WebClient webClient = new WebClient())
-                    {
-                        await webClient.DownloadFileTaskAsync($"https://raw.githubusercontent.com/ksduster/The-Isle-Evrima-ini/main/Game.ini", filePath);
-                    }
-                }
-                catch (Exception e) {
-                    System.Diagnostics.Debug.WriteLine($"Github.DownloadGameServerConfig {e}"); 
-                }
-            }
-            return File.Exists(filePath);
-        } */
-        // Get ini files
         public static async Task<bool> DownloadGameServerConfig(string fileSource, string filePath, string iniType)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
             if (File.Exists(filePath))
             {
-                File.Delete(filePath);
+                // File.Delete(filePath);
+                return true;
             }
 
             string downloadUrl = iniType == "Game" 
@@ -423,91 +338,41 @@ namespace WindowsGSM.Plugins
             }
             return File.Exists(filePath);
         }
-        
-        /* public static async Task<bool> adaptIniOnLaunch(string fileSource, string gameIniPath, string engineIniPath)
+
+        public static async Task UpdateSettings(string _serverData, string gameIniPath)
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(gameIniPath));
-            Directory.CreateDirectory(Path.GetDirectoryName(engineIniPath));
+            // Parse server data
+            string[] splitServerData = _serverData.Split(';');
+            var adminListFiles = new Dictionary<string, string>();
+            var otherSettings = new Dictionary<string, string>();
 
-            bool gameIniDownloaded = true;
-            bool engineIniDownloaded = true;
-
-            // Check if game.ini exists, and download it if missing.
-            if (!File.Exists(gameIniPath))
+            foreach (string s in splitServerData)
             {
-                try
+                string[] splitSetting = s.Split('=');
+                if (splitSetting.Length == 2)
                 {
-                    await DownloadGameServerConfig(fileSource, gameIniPath, "Game");
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Error downloading Game.ini: {e}");
-                    gameIniDownloaded = false;
-                }
-            }
-
-            // Check if engine.ini exists, and download it if missing.
-            if (!File.Exists(engineIniPath))
-            {
-                try
-                {
-                    await DownloadGameServerConfig(fileSource, engineIniPath, "Engine");
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Error downloading Engine.ini: {e}");
-                    engineIniDownloaded = false;
-                }
-            }
-
-            return gameIniDownloaded && engineIniDownloaded;
-        } */
-
-
-
-// Game mode depreciated in Evrima. Will be cleaning this section out in future.
-        /* public static async Task<string> GetGameMode(string serverData)
-        {
-            string defaultGameMode = "game=Survival";
-            string[] parts = serverData.Split(';');
-            foreach (var part in parts)
-            {
-                if (part.StartsWith("game=", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (part.Equals("game=Survival", StringComparison.OrdinalIgnoreCase) ||
-                        part.Equals("game=Sandbox", StringComparison.OrdinalIgnoreCase))
+                    if (splitSetting[0].StartsWith("adminList", StringComparison.OrdinalIgnoreCase))
                     {
-                        defaultGameMode = part;
-                        break;
+                        adminListFiles.Add(splitSetting[0].Trim(), splitSetting[1].Trim());
+                    }
+                    else
+                    {
+                        otherSettings.Add(splitSetting[0].Trim(), splitSetting[1].Trim());
                     }
                 }
             }
 
-            return defaultGameMode;
-        } */
-
-        public static async Task UpdateAdminList(string _serverData, string gameIniPath)
-        {
-            string[] splitServerData = _serverData.Split(';');
-            Dictionary<string, string> adminListFiles = new Dictionary<string, string>();
-            foreach (string s in splitServerData)
-            {
-                if (s.StartsWith("adminList", StringComparison.OrdinalIgnoreCase))
-                {
-                    string[] splitAdminList = s.Split('=');
-                    adminListFiles.Add(splitAdminList[0], splitAdminList[1]);
-                }
-            }
-            List<string> combinedAdminList = new List<string>();
-            foreach (KeyValuePair<string, string> kvp in adminListFiles)
+            // Fetch and combine admin list
+            var combinedAdminList = new List<string>();
+            foreach (var kvp in adminListFiles)
             {
                 try
                 {
                     using (var client = new WebClient())
                     {
                         string txtFile = await client.DownloadStringTaskAsync(kvp.Value);
-                        string[] lines = txtFile.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-                        foreach (string line in lines)
+                        string[] fileLines = txtFile.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                        foreach (string line in fileLines)
                         {
                             combinedAdminList.Add(line.Trim());
                         }
@@ -515,36 +380,73 @@ namespace WindowsGSM.Plugins
                 }
                 catch (Exception)
                 {
+                    // Handle exceptions (e.g., logging)
                     continue;
                 }
             }
+
+            // Read and update the configuration file
+            var lines = File.ReadAllLines(gameIniPath).ToList();
+            int startIndex = lines.FindIndex(x => x.StartsWith("[/Script/TheIsle.TIGameSession]"));
+            int endIndex = lines.FindIndex(startIndex, x => x.StartsWith("[") && !x.StartsWith("[/Script/TheIsle.TIGameSession]"));
+
+            if (startIndex == -1 || endIndex == -1) return; // Section not found
+
+            // Remove old settings in the section
+            int currentIndex = startIndex + 1;
+            while (currentIndex < endIndex)
+            {
+                if (otherSettings.Keys.Any(key => lines[currentIndex].StartsWith(key)))
+                {
+                    lines.RemoveAt(currentIndex);
+                    endIndex--;
+                }
+                else
+                {
+                    currentIndex++;
+                }
+            }
+
+            // Insert new settings in the section
+            int insertIndex = endIndex;
+            foreach (var setting in otherSettings)
+            {
+                lines.Insert(insertIndex, $"{setting.Key}={setting.Value}");
+                insertIndex++;
+            }
+
+            // Update admin list
             if (combinedAdminList.Count > 0)
             {
-                var lines = File.ReadAllLines(gameIniPath).ToList();
-                int startIndex = lines.FindIndex(x => x.StartsWith("[/Script/TheIsle.TIGameStateBase]"));
-                int endIndex = lines.FindIndex(startIndex, x => x.StartsWith("WhitelistIDs="));
-                int currentIndex = startIndex + 1;
-                while (currentIndex < endIndex)
+                int adminListStartIndex = lines.FindIndex(x => x.StartsWith("[/Script/TheIsle.TIGameStateBase]"));
+                int adminListEndIndex = lines.FindIndex(adminListStartIndex, x => x.StartsWith("WhitelistIDs="));
+                currentIndex = adminListStartIndex + 1;
+
+                // Remove old AdminsSteamIDs entries
+                while (currentIndex < adminListEndIndex)
                 {
                     if (lines[currentIndex].StartsWith("AdminsSteamIDs="))
                     {
                         lines.RemoveAt(currentIndex);
-                        endIndex--;
+                        adminListEndIndex--;
                     }
                     else
                     {
                         currentIndex++;
                     }
                 }
-                int insertIndex = endIndex;
+
+                // Insert new AdminsSteamIDs
+                int adminInsertIndex = adminListEndIndex;
                 foreach (string adminId in combinedAdminList)
                 {
-                    lines.Insert(insertIndex, $"AdminsSteamIDs={adminId}");
-                    insertIndex++;
+                    lines.Insert(adminInsertIndex, $"AdminsSteamIDs={adminId}");
+                    adminInsertIndex++;
                 }
-                File.WriteAllLines(gameIniPath, lines);
             }
-        }
 
+            // Write the updated lines back to the file
+            File.WriteAllLines(gameIniPath, lines);
+        }
     }
 }
