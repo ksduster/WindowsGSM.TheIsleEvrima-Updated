@@ -21,7 +21,7 @@ namespace WindowsGSM.Plugins
             name = "WindowsGSM.TheIsle", // WindowsGSM.XXXX
             author = "ksduster",
             description = "WindowsGSM plugin for supporting TheIsle Evrima Dedicated Server",
-            version = "1.2",
+            version = "1.3",
             url = "https://github.com/ksduster/WindowsGSM.TheIsleEvrima-Updated", // Github repository link (Best practice)
             color = "#34c9eb" // Color Hex
         };
@@ -39,7 +39,7 @@ namespace WindowsGSM.Plugins
         // - Game server Fixed variables
         public override string StartPath => @"TheIsle\Binaries\Win64\TheIsleServer-Win64-Shipping.exe"; // Game server start path
         public string FullName = "The Isle Evrima Dedicated Server"; // Game server FullName
-        public bool AllowsEmbedConsole = false;  // Does this server support output redirect?  // Evrima nolonger outputs to console
+        public bool AllowsEmbedConsole = true;  // Does this server support output redirect?  // Evrima nolonger outputs to console
         public int PortIncrements = 1; // This tells WindowsGSM how many ports should skip after installation
         public object QueryMethod = new A2S(); // Query method should be use on current server type. Accepted value: null or new A2S() or new FIVEM() or new UT3()
 
