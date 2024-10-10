@@ -35,7 +35,7 @@ Under the "Server Start Param" enter the ConfigOption=true/false, and seperate w
 
 Example: `bEnableHumans=true;bQueueEnabled=true;QueuePort=9999`
 
-The next time you start or restart your sevrver the values will be added to the game.ini in the `/Script/TheIsle.TIGameSession` section
+The next time you start or restart your server the values will be added to the game.ini in the `/Script/TheIsle.TIGameSession` section
 
 Do not add `Servername` or `MaxPlayerCount` values, as these are updated from the server config values in the edit window.
 
