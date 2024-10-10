@@ -81,6 +81,8 @@ Availabe values:
 
 `bEnableMutations=true/false` // Enable/disable all mutations.  See Game.ini to enable/disable specific mutation types.
 
+`Discord=""` // Example: Discord="https://discord.gg/abc1234" - Make sure the link does not expire from your discord otherwise users will click the discord button in game menu and the website that opens will go no where.
+
 
 # Admin Lists (Not required!)   Credit: [@menix1337](https://www.github.com/menix1337)'s [Legacy](https://github.com/menix1337/WindowsGSM.TheIsleLegacy)
 
