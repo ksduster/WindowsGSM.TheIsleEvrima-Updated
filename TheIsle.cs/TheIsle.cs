@@ -18,7 +18,7 @@ namespace WindowsGSM.Plugins
         // - Plugin Details
         public Plugin Plugin = new Plugin
         {
-            name = "WindowsGSM.TheIsle", // WindowsGSM.XXXX
+            name = "WindowsGSM.TheIsleEvrima", // WindowsGSM.XXXX
             author = "ksduster",
             description = "WindowsGSM plugin for supporting TheIsle Evrima Dedicated Server",
             version = "1.3",
