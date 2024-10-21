@@ -1,4 +1,4 @@
-# WindowsGSM.TheIsleEvrima-Updated
+# WindowsGSM.TheIsleEvrima
 
 🧩WindowsGSM plugin that provides TheIsle Evrima Dedicated server support! Updated for the newest Evrima version.
 
