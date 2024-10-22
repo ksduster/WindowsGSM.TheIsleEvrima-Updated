@@ -22,7 +22,7 @@ namespace WindowsGSM.Plugins
             author = "ksduster",
             description = "WindowsGSM plugin for supporting TheIsle Evrima Dedicated Server",
             version = "1.3.1",
-            url = "https://github.com/ksduster/WindowsGSM.TheIsleEvrima-Updated", // Github repository link (Best practice)
+            url = "https://github.com/ksduster/WindowsGSM.TheIsle", // Github repository link (Best practice)
             color = "#34c9eb" // Color Hex
         };
 
